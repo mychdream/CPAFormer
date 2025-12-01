@@ -1,0 +1,80 @@
+# general settings
+name: test_CPAFormer_x2
+model_type: CPAFormerModel
+scale: 2
+num_gpu: 4
+manual_seed: 7762
+gpu_ids: auto
+datasets:
+  test_1:  # the 1st test dataset
+    name: Set5
+    type: PairedImageDataset
+    dataroot_gt: datasets/benchmark/Set5/HR
+    dataroot_lq: datasets/benchmark/Set5/LR_bicubic/X2
+    filename_tmpl: '{}x2'
+    io_backend:
+      type: disk
+
+  test_2:  # the 2nd test dataset
+    name: Set14
+    type: PairedImageDataset
+    dataroot_gt: datasets/benchmark/Set14/HR
+    dataroot_lq: datasets/benchmark/Set14/LR_bicubic/X2
+    filename_tmpl: '{}x2'
+    io_backend:
+      type: disk
+
+  test_3:  # the 3rd test dataset
+    name: B100
+    type: PairedImageDataset
+    dataroot_gt: datasets/benchmark/B100/HR
+    dataroot_lq: datasets/benchmark/B100/LR_bicubic/X2
+    filename_tmpl: '{}x2'
+    io_backend:
+      type: disk
+
+  test_4:  # the 4th test dataset
+    name: Urban100
+    type: PairedImageDataset
+    dataroot_gt: datasets/benchmark/Urban100/HR
+    dataroot_lq: datasets/benchmark/Urban100/LR_bicubic/X2
+    filename_tmpl: '{}x2'
+    io_backend:
+      type: disk
+
+  test_5:  # the 5th test dataset
+    name: Manga109
+    type: PairedImageDataset
+    dataroot_gt: datasets/benchmark/Manga109/HR
+    dataroot_lq: datasets/benchmark/Manga109/LR_bicubic/X2
+    filename_tmpl: '{}x2'
+    io_backend:
+      type: disk
+
+
+
+# network structures
+network_g:
+  type: CPAFormer
+  upscale: 2
+
+# path
+path:
+  pretrain_network_g: ~
+  strict_load_g: true
+  results_root: results/CPAFormer
+
+# validation settings
+val:
+  save_img: true
+  suffix: CPAFormer  # add suffix to saved images, if None, use exp name
+
+  metrics:
+    psnr: # metric name, can be arbitrary
+      type: calculate_psnr_pt
+      crop_border: 2
+      test_y_channel: true
+    ssim:
+      type: calculate_ssim_pt
+      crop_border: 2
+      test_y_channel: true
